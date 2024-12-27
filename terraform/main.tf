@@ -6,12 +6,12 @@ resource "aws_s3_bucket" "data_bucket" {
   bucket = "mybucket-123"
 }
 
-resource "aws_rds_instance" "db_instance" {
+resource "aws_db_instance" "db_instance" {
   allocated_storage    = 20
   engine               = "mysql"
   engine_version       = "8.0"
   instance_class       = "db.t3.micro"
-  name                 = "mydatabase"
+  db_name              = "mydatabase"
   username             = "admin"
   password             = "password123"
   skip_final_snapshot  = true
