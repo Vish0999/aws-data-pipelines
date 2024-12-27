@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/Vish0999/aws-data-pipelines.git'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh '''
+                    docker build -t data-pipeline-app ./docker
+                    '''
+                }
+            }
+        }
+        stage('Push to ECR') {
+            steps {
+                script {
+                    sh '''
+                    aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin <your-account-id>.dkr.ecr.us-east-1.amazonaws.com
+                    docker tag data-pipeline-app:latest <your-account-id>.dkr.ecr.us-east-1.amazonaws.com/data-pipeline-repo:latest
+                    docker push <your-account-id>.dkr.ecr.us-east-1.amazonaws.com/data-pipeline-repo:latest
+                    '''
+                }
+            }
+        }
+        stage('Deploy Infrastructure') {
+            steps {
+                script {
+                    dir('terraform') {
+                        sh 'terraform init'
+                        sh 'terraform apply -auto-approve'
+                    }
+                }
+            }
+        }
+    }
+}
