@@ -1,5 +1,6 @@
 import boto3
 import sys
+import pymysql
 
 def read_from_s3(bucket_name, file_key):
     s3 = boto3.client('s3')
@@ -44,16 +45,16 @@ def push_to_glue(data, db_name, table_name):
         sys.exit(1)
 
 if __name__ == "__main__":
-    s3_bucket = "your-bucket-name"
-    s3_key = "your-file-key"
+    s3_bucket = "mybucket-123"
+    s3_key = "mybucket.txt"
     data = read_from_s3(s3_bucket, s3_key)
 
     rds_params = {
-        'host': 'your-rds-endpoint',
-        'user': 'your-username',
-        'password': 'your-password',
-        'database': 'your-database-name'
+        'host': 'mydatabase.abj123xyz.eu-north-1.rds.amazonaws.com',
+        'user': 'admin',
+        'password': 'password123',
+        'database': 'mydatabase'
     }
 
     if not push_to_rds(data, rds_params):
-        push_to_glue(data, 'your-glue-database', 'your-glue-table')
+        push_to_glue(data, 'glue_database', 'glue_table')

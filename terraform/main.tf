@@ -17,9 +17,7 @@ resource "aws_db_instance" "db_instance" {
   skip_final_snapshot  = true
 }
 
-resource "aws_ecr_repository" "repo" {
-  name = "data-pipeline-repo"
-}
+
 
 resource "aws_lambda_function" "data_pipeline" {
   function_name = "data-pipeline-function"

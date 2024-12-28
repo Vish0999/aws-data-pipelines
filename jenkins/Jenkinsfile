@@ -20,9 +20,10 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin <your-account-id>.dkr.ecr.us-east-1.amazonaws.com
-                    docker tag data-pipeline-app:latest <your-account-id>.dkr.ecr.us-east-1.amazonaws.com/data-pipeline-repo:latest
-                    docker push <your-account-id>.dkr.ecr.us-east-1.amazonaws.com/data-pipeline-repo:latest
+                    aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 851725602161.dkr.ecr.eu-north-1.amazonaws.com
+                    docker build -t myrepo .
+                    docker tag myrepo:latest 851725602161.dkr.ecr.eu-north-1.amazonaws.com/myrepo:latest
+                    docker push 851725602161.dkr.ecr.eu-north-1.amazonaws.com/myrepo:latest
                     '''
                 }
             }
